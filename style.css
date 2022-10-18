@@ -25,19 +25,40 @@ main{
     width: 60%;
     margin: 3em;
 }
+main div{
+    position: relative;
+}
 .card{
    width: 117px; 
    height: 146px;
-   background-color: #A7E9AF;
-   border: solid 1px #99CEA8;
    border-radius: 5px;
    padding: 16px;
    display: flex;
    align-items: center;
    margin: 16px;
+   backface-visibility: hidden;
+}
+.back{
+    background-color: #A7E9AF;
+    border: solid 1px #99CEA8;
+    
+}
+.back:hover{
+    cursor: pointer;
+}
+
+.front{
+    background-color: #ffcece;
+    border: solid 1px #E1E1E1;
+}
+.front:hover{
+    cursor: pointer;
 }
 .card img{
     width: 100%;
+}
+.hide{
+    display: none;
 }
 
 @media(max-width:710px){
