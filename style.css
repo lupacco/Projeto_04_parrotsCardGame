@@ -66,6 +66,9 @@ main div{
 .hide{
     transform: rotateY(-180deg);
 }
+.removed{
+    display: none;
+}
 
 @media(max-width:710px){
     header{
