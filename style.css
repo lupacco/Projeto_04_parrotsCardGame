@@ -3,3 +3,49 @@
 *{
     box-sizing: border-box;
 }
+body{
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3em;
+    background-color: #EEF9BF;
+}
+header{
+    color: #75B79E;
+    font-weight: 700;
+    font-size: 3.5em;
+    text-align: center;
+}
+main{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    margin: 3em;
+}
+.card{
+   width: 117px; 
+   height: 146px;
+   background-color: #A7E9AF;
+   border: solid 1px #99CEA8;
+   border-radius: 5px;
+   padding: 16px;
+   display: flex;
+   align-items: center;
+   margin: 16px;
+}
+.card img{
+    width: 100%;
+}
+
+@media(max-width:710px){
+    header{
+        font-size: 2.5em;
+        line-height: 1.2em;
+    }
+    main{
+        margin-top: 1em;
+    }
+}
