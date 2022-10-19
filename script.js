@@ -1,4 +1,5 @@
-let cardsFliped = [];
+let cardsFliped = []
+let pairsMatched = []
 const possibileCards = ['bobrossparrot','explodyparrot','fiestaparrot','metalparrot','revertitparrot','tripletsparrot','unicornparrot']
 
 function askCardsQuantity(){
@@ -67,33 +68,58 @@ function insertCards(cardsAvaible){
 }
 
 function flipCard(card){
-    console.log('CARD---------------------')
-    console.log(card)
+    // console.log('CARD---------------------')
+    // console.log(card)
     console.log('B------------------------')
-    let back = card.querySelector('.back')
-    let front = card.querySelector('.front')
-    //condição que garante que só vai virar 2 cartas
-    if(cardsFliped.length < 2){
-        back.classList.toggle('hide')
-        front.classList.toggle('hide')
-        
-        if(back.classList.contains('hide')){
-            cardsFliped.push(card)
-        } 
-        else{
-            cardsFliped.pop(card)
+    if(pairMatched(card)){
+        console.log('Já ta em match')
+    }else{
+        let back = card.querySelector('.back')
+        let front = card.querySelector('.front')
+        //condição que garante que só vai virar 2 cartas
+        if(cardsFliped.length < 2){
+            back.classList.toggle('hide')
+            front.classList.toggle('hide')
+            
+            if(back.classList.contains('hide')){
+                cardsFliped.push(card)
+            } 
+            else{
+                cardsFliped.pop(card)
+            }
+            testCards()
         }
-        testCards()
+        else if(cardsFliped.length == 2){
+            back.classList.toggle('hide')
+            front.classList.toggle('hide')
+            cardsFliped.pop()
+        }
     }
-    // if(cardsFliped.length == 2){
-    //     back.classList.toggle('hide')
-    //     front.classList.toggle('hide')
-    // }
-    console.log("cartas viradas: "+cardsFliped.length)
+}
+
+function pairMatched(card){
+    //resgata face frontal do card
+    let cardFront = card.querySelector('.front')
+    //resgata url da tag da imagem importada
+    let cardSrc = cardFront.querySelector('img').src
+    let gifNameRegex = /images\/(.*).gif/
+    //filtra o nome da imagem importada com regex
+    let cardName = gifNameRegex.exec(cardSrc)[1]
+    //verifica se a carta já está em pairsMatched
+    let matched = false
+    //verifica se o par ja está em match
+    for(i in pairsMatched){
+        if(pairsMatched[i] == cardName){
+            matched = true
+        }
+    }
+    console.log(matched)
+    return matched
+    
+
 }
 
 function testCards(){
-    console.log('entrou no teste')
     if(cardsFliped.length === 2){
         //resgata faces frontais dos cards
         let card0 = cardsFliped[0].querySelector('.front')
@@ -107,15 +133,22 @@ function testCards(){
         let cardName1 = gifNameRegex.exec(cardSrc1)[1]
         
         if(cardName0 != cardName1){
-            flipCard(cardsFliped[1])
-            cardsFliped.pop()
-            flipCard(cardsFliped[0])
-            cardsFliped.pop()
             console.log('as cartas sao diferentes')
+            setTimeout(() => {return flipCard(cardsFliped[1])}, 1000)
+            setTimeout(() => {return flipCard(cardsFliped[0])}, 1000)
         }
-        console.log('E------------------------------')
+        else{
+            console.log("cartas viradas pra teste: "+cardsFliped.length)
+            console.log('as cartas sao iguais')
+            cardsFliped.pop()
+            cardsFliped.pop()
+            pairsMatched.push(cardName0) //registra par com match
+            console.log(pairsMatched)
+        }
         
     }
+    console.log("cartas viradas pra teste: "+cardsFliped.length)
+    console.log('E------------------------------')
 
 
 }
