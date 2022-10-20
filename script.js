@@ -1,5 +1,6 @@
 let cardsFliped = []
 let pairsMatched = []
+let onTest = false
 const possibileCards = ['bobrossparrot','explodyparrot','fiestaparrot','metalparrot','revertitparrot','tripletsparrot','unicornparrot']
 
 function askCardsQuantity(){
@@ -68,26 +69,26 @@ function insertCards(cardsAvaible){
 }
 
 function flipCard(card){
-    // console.log('CARD---------------------')
-    // console.log(card)
-    console.log('B------------------------')
     if(pairMatched(card)){
         console.log('Já ta em match')
-    }else{
+    }else if(onTest == false) {
         let back = card.querySelector('.back')
         let front = card.querySelector('.front')
-        //condição que garante que só vai virar 2 cartas
+        //condição que garante que só vai testar 2 cartas
         if(cardsFliped.length < 2){
             back.classList.toggle('hide')
             front.classList.toggle('hide')
             
             if(back.classList.contains('hide')){
+                // se a carta estava virada registra que agora está desvirada
                 cardsFliped.push(card)
             } 
             else{
+                //caso contrário vira a carta "para baixo" como uma desistencia da opção..o que parando pra pensar agora não é muito justo nesse jogo...
                 cardsFliped.pop(card)
             }
             testCards()
+            console.log(onTest)
         }
         else if(cardsFliped.length == 2){
             back.classList.toggle('hide')
@@ -113,14 +114,12 @@ function pairMatched(card){
             matched = true
         }
     }
-    console.log(matched)
     return matched
-    
-
 }
 
 function testCards(){
     if(cardsFliped.length === 2){
+        onTest = true
         //resgata faces frontais dos cards
         let card0 = cardsFliped[0].querySelector('.front')
         let card1 = cardsFliped[1].querySelector('.front')
@@ -134,17 +133,17 @@ function testCards(){
         
         if(cardName0 != cardName1){
             console.log('as cartas sao diferentes')
-            setTimeout(() => {return flipCard(cardsFliped[1])}, 1000)
-            setTimeout(() => {return flipCard(cardsFliped[0])}, 1000)
+            setTimeout(async () => {await flipCard(cardsFliped[1])}, 1000)
+            setTimeout(async () => { flipCard(cardsFliped[0])}, 1000)
         }
-        else{
+        else if(cardName0 == cardName1){
             console.log("cartas viradas pra teste: "+cardsFliped.length)
             console.log('as cartas sao iguais')
             cardsFliped.pop()
             cardsFliped.pop()
             pairsMatched.push(cardName0) //registra par com match
-            console.log(pairsMatched)
         }
+        onTest = false
         
     }
     console.log("cartas viradas pra teste: "+cardsFliped.length)
