@@ -133,7 +133,7 @@ function testCards(){
         
         if(cardName0 != cardName1){
             console.log('as cartas sao diferentes')
-            setTimeout(async () => {await flipCard(cardsFliped[1])}, 1000)
+            setTimeout(async () => { flipCard(cardsFliped[1])}, 1000)
             setTimeout(async () => { flipCard(cardsFliped[0])}, 1000)
         }
         else if(cardName0 == cardName1){
