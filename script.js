@@ -69,11 +69,13 @@ function insertCards(cardsAvaible){
 }
 
 function flipCard(card){
+    let back = card.querySelector('.back')
+    let front = card.querySelector('.front')
     if(pairMatched(card)){
-        console.log('Já ta em match')
+        console.log('Esta carta ja está ta em match')
+        console.log(onTest)
     }else if(onTest == false) {
-        let back = card.querySelector('.back')
-        let front = card.querySelector('.front')
+        console.log('ta em teste -> '+onTest)
         //condição que garante que só vai testar 2 cartas
         if(cardsFliped.length < 2){
             back.classList.toggle('hide')
@@ -88,13 +90,12 @@ function flipCard(card){
                 cardsFliped.pop(card)
             }
             testCards()
-            console.log(onTest)
         }
-        else if(cardsFliped.length == 2){
-            back.classList.toggle('hide')
-            front.classList.toggle('hide')
-            cardsFliped.pop()
-        }
+    } //if(cardsFliped.length == 2)
+    else if(onTest == true && cardsFliped.length > 0){
+        back.classList.toggle('hide')
+        front.classList.toggle('hide')
+        cardsFliped.pop()
     }
 }
 
@@ -117,9 +118,16 @@ function pairMatched(card){
     return matched
 }
 
+function endTest(){
+    onTest = false
+}
+
 function testCards(){
     if(cardsFliped.length === 2){
+        console.log('começou um teste')
         onTest = true
+        console.log('coloca onTeste pra true')
+        console.log(onTest)
         //resgata faces frontais dos cards
         let card0 = cardsFliped[0].querySelector('.front')
         let card1 = cardsFliped[1].querySelector('.front')
@@ -133,8 +141,13 @@ function testCards(){
         
         if(cardName0 != cardName1){
             console.log('as cartas sao diferentes')
-            setTimeout(async () => { flipCard(cardsFliped[1])}, 1000)
-            setTimeout(async () => { flipCard(cardsFliped[0])}, 1000)
+            setTimeout(() => { flipCard(cardsFliped[1])}, 1000)
+            setTimeout(() => { flipCard(cardsFliped[0])}, 1000)
+            console.log('desvirou as cartas')
+            console.log(onTest)
+            setTimeout(() => { endTest()}, 1000)
+            console.log('mudou onTest pra false novamente')
+            console.log(onTest) //a função continua mesmo com o setTImeout -> BUG
         }
         else if(cardName0 == cardName1){
             console.log("cartas viradas pra teste: "+cardsFliped.length)
@@ -142,12 +155,14 @@ function testCards(){
             cardsFliped.pop()
             cardsFliped.pop()
             pairsMatched.push(cardName0) //registra par com match
+            setTimeout(() => { endTest()}, 1000)
+            console.log('mudou onTest pra false novamente')
+            console.log(onTest)
         }
-        onTest = false
         
+        console.log(onTest)
+        console.log('terminou teste')
     }
-    console.log("cartas viradas pra teste: "+cardsFliped.length)
-    console.log('E------------------------------')
 
 
 }
