@@ -114,33 +114,29 @@ function endTest(){
 }
 
 function getCardName(card){
-    console.log('entrou no getname')
-    console.log(card)
     //resgata faces frontais dos cards
     let cardFace = card.querySelector('.front')
-    console.log('pegou face')
-    console.log(cardFace)
     //resgata url da tag img
     let cardSrc = cardFace.querySelector('img').src
-    console.log('pegou url')
-    console.log(cardSrc)
-    let gifNameRegex = /images\/(.*).gif/
     //filtra o nome da imagem importada
+    let gifNameRegex = /images\/(.*).gif/
     let cardName = gifNameRegex.exec(cardSrc)[1]
-    console.log('pegou nome')
-    console.log(cardName)
 
     return cardName
 }
 
 function testCards(){
     if(cardsFliped.length === 2){
-        // const lockCards = () => {
-        //     let cards = document.querySelectorAll('main div')
-        //     cards.filter((card)=>{
-        //         if()
-        //     })
-        // }
+        const lockCards = () => {
+            let cards = document.querySelectorAll('main div')
+            Array.from(cards).filter((card)=>{
+                console.log(card)
+                if(card != cardsFliped[0] || card != cardsFliped[1]){
+                    card.setAttribute('onclick','')
+                }
+            })
+        }
+        lockCards()
         console.log('começou um teste')
         onTest = true
         console.log('coloca onTeste pra true')
@@ -165,11 +161,16 @@ function testCards(){
             cardsFliped.pop().setAttribute('onclick','') //remove funcão de virar carta do onclick
             cardsFliped.pop().setAttribute('onclick','') //remove funcão de virar carta do onclick
             pairsMatched.push(cardName0) //registra par com match
-            setTimeout(() => { endTest()}, 1000)
-            console.log('mudou onTest pra false novamente')
-            console.log(onTest)
         }
-        
+        const unlockCards = () => {
+            let cards = document.querySelectorAll('main div')
+            Array.from(cards).filter((card)=>{
+                if(card != cardsFliped[0] || card != cardsFliped[1] || pairMatched(card) == false){
+                    card.setAttribute('onclick','flipCard(this)')
+                }
+            })
+        }
+        setTimeout(() => {unlockCards()}, 1000)
         console.log(onTest)
         console.log('terminou teste')
     }
