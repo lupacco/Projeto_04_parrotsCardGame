@@ -56,7 +56,7 @@ function insertCards(cardsAvaible){
     let board = document.querySelector('main')
     for(let i=0;i<cardsAvaible.length;i++){
         board.innerHTML += `
-            <div onclick="flipCard(this)">
+            <div class="cardSection" onclick="flipCard(this)">
             <div class=" card back" >
                 <img src="images/back.png" alt="">
             </div>
@@ -71,11 +71,11 @@ function insertCards(cardsAvaible){
 function flipCard(card){
     let back = card.querySelector('.back')
     let front = card.querySelector('.front')
+
     if(pairMatched(card)){
         console.log('par já ta em match')
     }
     else if(onTest == false) {
-        console.log('ta em teste -> '+onTest)
         //condição que garante que só vai testar 2 cartas
         if(cardsFliped.length < 2){
             back.classList.toggle('hide')
@@ -100,10 +100,9 @@ function flipCard(card){
 }
 
 function pairMatched(card){
+    let matched = false
     let cardName = getCardName(card)
     //verifica se a carta já está em pairsMatched
-    let matched = false
-    //verifica se o par ja está em match
     for(i in pairsMatched){
         if(pairsMatched[i] == cardName){
             matched = true
@@ -119,22 +118,21 @@ function endTest(){
 function getCardName(card){
     //resgata faces frontais dos cards
     let cardFace = card.querySelector('.front')
-    console.log(`cardFace = ${cardFace}`)
+    if(cardFace!=null){
     //resgata url da tag img
-    let cardSrc = cardFace.querySelector('img').src
-    console.log(`cardSrc = ${cardSrc}`)
-    //filtra o nome da imagem importada
-    let gifNameRegex = /images\/(.*).gif/
-    let cardName = gifNameRegex.exec(cardSrc)[1]
-    console.log(`cardName = ${cardName}`)
+        let cardSrc = cardFace.querySelector('img').src
+        //filtra o nome da imagem importada
+        let gifNameRegex = /images\/(.*).gif/
+        let cardName = gifNameRegex.exec(cardSrc)[1]
 
-    return cardName
+        return cardName
+    }
 }
 
 function testCards(){
     if(cardsFliped.length === 2){
         const lockCards = () => {
-            let cards = document.querySelectorAll('main div')
+            let cards = document.querySelectorAll('.cardSection')
             Array.from(cards).filter((card)=>{
                 if(card != cardsFliped[0] || card != cardsFliped[1]){
                     card.setAttribute('onclick','')
@@ -144,15 +142,15 @@ function testCards(){
         lockCards()
         console.log('começou um teste')
         onTest = true
-        console.log('onTest = '+onTest)
         
         let cardName0 = getCardName(cardsFliped[0])
         let cardName1 = getCardName(cardsFliped[1])
         
         if(cardName0 != cardName1){
             console.log('as cartas sao diferentes')
-            setTimeout(() => { flipCard(cardsFliped[1])}, 1000)
-            setTimeout(() => { flipCard(cardsFliped[0])}, 1000)
+            setTimeout(() => { flipCard(cardsFliped[1])
+                               flipCard(cardsFliped[0])
+                            }, 1000)
             setTimeout(() => { endTest()}, 1000)
         }
         else if(cardName0 == cardName1){
@@ -162,9 +160,8 @@ function testCards(){
             pairsMatched.push(cardName0) //registra par com match
             setTimeout(() => { endTest()}, 1000)
         }
-        // console.log(pairsMatched)
         const unlockCards = () => {
-            let cards = document.querySelectorAll('main div')
+            let cards = document.querySelectorAll('.cardSection')
             Array.from(cards).filter((card)=>{
                 if(card != cardsFliped[0] || card != cardsFliped[1] || pairMatched(card) == false){
                     card.setAttribute('onclick','flipCard(this)')
@@ -172,8 +169,6 @@ function testCards(){
             })
         }
         setTimeout(() => {unlockCards()}, 1000)
-        console.log('terminou teste')
-        console.log('onTest = '+onTest)
+        console.log('terminou um teste')
     }
-    console.log(cardsFliped)
 }
