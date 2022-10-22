@@ -71,10 +71,7 @@ function insertCards(cardsAvaible){
 function flipCard(card){
     let back = card.querySelector('.back')
     let front = card.querySelector('.front')
-    if(pairMatched(card)){
-        console.log('Esta carta ja está ta em match')
-        console.log(onTest)
-    }else if(onTest == false) {
+    if(onTest == false) {
         console.log('ta em teste -> '+onTest)
         //condição que garante que só vai testar 2 cartas
         if(cardsFliped.length < 2){
@@ -100,13 +97,7 @@ function flipCard(card){
 }
 
 function pairMatched(card){
-    //resgata face frontal do card
-    let cardFront = card.querySelector('.front')
-    //resgata url da tag da imagem importada
-    let cardSrc = cardFront.querySelector('img').src
-    let gifNameRegex = /images\/(.*).gif/
-    //filtra o nome da imagem importada com regex
-    let cardName = gifNameRegex.exec(cardSrc)[1]
+    let cardName = getCardName(card)
     //verifica se a carta já está em pairsMatched
     let matched = false
     //verifica se o par ja está em match
@@ -122,22 +113,41 @@ function endTest(){
     onTest = false
 }
 
+function getCardName(card){
+    console.log('entrou no getname')
+    console.log(card)
+    //resgata faces frontais dos cards
+    let cardFace = card.querySelector('.front')
+    console.log('pegou face')
+    console.log(cardFace)
+    //resgata url da tag img
+    let cardSrc = cardFace.querySelector('img').src
+    console.log('pegou url')
+    console.log(cardSrc)
+    let gifNameRegex = /images\/(.*).gif/
+    //filtra o nome da imagem importada
+    let cardName = gifNameRegex.exec(cardSrc)[1]
+    console.log('pegou nome')
+    console.log(cardName)
+
+    return cardName
+}
+
 function testCards(){
     if(cardsFliped.length === 2){
+        // const lockCards = () => {
+        //     let cards = document.querySelectorAll('main div')
+        //     cards.filter((card)=>{
+        //         if()
+        //     })
+        // }
         console.log('começou um teste')
         onTest = true
         console.log('coloca onTeste pra true')
         console.log(onTest)
-        //resgata faces frontais dos cards
-        let card0 = cardsFliped[0].querySelector('.front')
-        let card1 = cardsFliped[1].querySelector('.front')
-        //resgata url da tag img
-        let cardSrc0 = card0.querySelector('img').src
-        let cardSrc1 = card1.querySelector('img').src
-        let gifNameRegex = /images\/(.*).gif/
-        //filtra o nome da imagem importada
-        let cardName0 = gifNameRegex.exec(cardSrc0)[1]
-        let cardName1 = gifNameRegex.exec(cardSrc1)[1]
+        
+        let cardName0 = getCardName(cardsFliped[0])
+        let cardName1 = getCardName(cardsFliped[1])
         
         if(cardName0 != cardName1){
             console.log('as cartas sao diferentes')
@@ -152,8 +162,8 @@ function testCards(){
         else if(cardName0 == cardName1){
             console.log("cartas viradas pra teste: "+cardsFliped.length)
             console.log('as cartas sao iguais')
-            cardsFliped.pop()
-            cardsFliped.pop()
+            cardsFliped.pop().setAttribute('onclick','') //remove funcão de virar carta do onclick
+            cardsFliped.pop().setAttribute('onclick','') //remove funcão de virar carta do onclick
             pairsMatched.push(cardName0) //registra par com match
             setTimeout(() => { endTest()}, 1000)
             console.log('mudou onTest pra false novamente')
@@ -163,6 +173,4 @@ function testCards(){
         console.log(onTest)
         console.log('terminou teste')
     }
-
-
 }
