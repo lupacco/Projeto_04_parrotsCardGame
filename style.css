@@ -26,6 +26,24 @@ main{
     width: 60%;
     margin: 3em;
 }
+.timer{
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 128px;
+    height: 48px;
+    background: #78d383;
+    border-radius: 16px;
+    font-weight: 500;
+    font-size: 2em;
+    color: #FFFFFF;
+}
+.timer div{
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
 main div{
     position: relative;
     display: flex;
@@ -78,6 +96,9 @@ main div{
     }
     main{
         margin-top: 1em;
+    }
+    .timer{
+        display: none;
     }
 }
 

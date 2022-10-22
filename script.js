@@ -1,7 +1,18 @@
+let cardOptions;
 let cardsFliped = []
 let pairsMatched = []
 let onTest = false
 const possibileCards = ['bobrossparrot','explodyparrot','fiestaparrot','metalparrot','revertitparrot','tripletsparrot','unicornparrot']
+
+function isGameFinished(){
+    if(pairsMatched.length == cardOptions){
+        let res = prompt("Deseja jogar novamente? Responda com 'sim' ou 'não")
+        if(res == "sim"){
+            removeCards()
+            askCardsQuantity()
+        }
+    }
+}
 
 function askCardsQuantity(){
     let cardsQuantity = prompt("Com quantas cartas você deseja jogar?")
@@ -33,7 +44,7 @@ function shuffleStrings(arr){
 }
 
 function generateCardsAvaible(quantity){
-    let cardOptions = quantity/2
+    cardOptions = quantity/2
     //resgata todas opções
     let options = [...possibileCards]
     //embaralha opções pra não remover sempre os mesmos itens
@@ -68,7 +79,19 @@ function insertCards(cardsAvaible){
     }
 }
 
+function removeCards(){
+    let board = document.querySelector('main')
+    board.innerHTML = ""
+    pairsMatched = []
+    cardsFliped = []
+}
+
+function startTimer(){
+
+}
+
 function flipCard(card){
+    //resgata frente e verso do card que invocou a função
     let back = card.querySelector('.back')
     let front = card.querySelector('.front')
 
@@ -86,12 +109,12 @@ function flipCard(card){
                 cardsFliped.push(card)
             } 
             else{
-                //caso contrário vira a carta "para baixo" como uma desistencia da opção..o que parando pra pensar agora não é muito justo nesse jogo...
+                //caso contrário vira a carta "para baixo" como uma desistencia da opção..o que parando pra pensar agora não é muito justo nesse jogo...mas acredito que basta remover esse else para mudar a regra do jogo
                 cardsFliped.pop(card)
             }
             testCards()
         }
-    } //if(cardsFliped.length == 2)
+    }
     else if(onTest == true && cardsFliped.length > 0){
         back.classList.toggle('hide')
         front.classList.toggle('hide')
@@ -131,6 +154,7 @@ function getCardName(card){
 
 function testCards(){
     if(cardsFliped.length === 2){
+        //remove funcionalidade de virar cartas de todas as cartas que não sejam as que estão em teste
         const lockCards = () => {
             let cards = document.querySelectorAll('.cardSection')
             Array.from(cards).filter((card)=>{
@@ -160,6 +184,7 @@ function testCards(){
             pairsMatched.push(cardName0) //registra par com match
             setTimeout(() => { endTest()}, 1000)
         }
+        //devolve funcionalidade de virar cartas para todas as cartas que não estiverem em match
         const unlockCards = () => {
             let cards = document.querySelectorAll('.cardSection')
             Array.from(cards).filter((card)=>{
@@ -168,7 +193,9 @@ function testCards(){
                 }
             })
         }
+        //espera um tempo antes de liberar cartas pra nao ser possível ter mais de 2 cartas viradas em jogo
         setTimeout(() => {unlockCards()}, 1000)
         console.log('terminou um teste')
     }
+    setTimeout(() => {isGameFinished()}, 1000)
 }
