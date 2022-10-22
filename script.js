@@ -65,6 +65,11 @@ function generateCardsAvaible(quantity){
 
 function insertCards(cardsAvaible){
     let board = document.querySelector('main')
+    board.innerHTML = `
+        <div class="timer">
+            <div>00:00</div>
+        </div>
+    `
     for(let i=0;i<cardsAvaible.length;i++){
         board.innerHTML += `
             <div class="cardSection" onclick="flipCard(this)">
