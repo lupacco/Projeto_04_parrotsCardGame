@@ -6,7 +6,7 @@ const possibileCards = ['bobrossparrot','explodyparrot','fiestaparrot','metalpar
 
 function isGameFinished(){
     if(pairsMatched.length == cardOptions){
-        let res = prompt("Deseja jogar novamente? Responda com 'sim' ou 'não")
+        let res = prompt("Deseja jogar novamente? Responda com 'sim' caso queira :)")
         if(res == "sim"){
             removeCards()
             askCardsQuantity()
@@ -196,6 +196,7 @@ function testCards(){
         //espera um tempo antes de liberar cartas pra nao ser possível ter mais de 2 cartas viradas em jogo
         setTimeout(() => {unlockCards()}, 1000)
         console.log('terminou um teste')
+
+        setTimeout(() => {isGameFinished()}, 1000)
     }
-    setTimeout(() => {isGameFinished()}, 1000)
 }
