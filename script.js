@@ -10,7 +10,7 @@ let onTest = false
 const possibileCards = ['bobrossparrot','explodyparrot','fiestaparrot','metalparrot','revertitparrot','tripletsparrot','unicornparrot']
 //variaveis para atualizar valor no timer
 let secondsInc = 0
-let seconds = 57
+let seconds = 1
 let minutesInc = 0
 let minutes = 0
 //inicia timer
@@ -58,6 +58,8 @@ function isGameFinished(){
         if(res == "sim"){
             removeCards()
             askCardsQuantity()
+            seconds = 0
+            minutes = 0
         }
     }
 }
