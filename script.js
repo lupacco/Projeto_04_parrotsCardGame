@@ -1,9 +1,54 @@
+/**
+ * @brief Parrot Game - Lucas Pagotto C. Oliveira - 23/10/22
+ *        Driven Turma 9 - Fourth week of the full-stack course
+ */ 
+
 let cardOptions;
 let cardsFliped = []
 let pairsMatched = []
 let onTest = false
 const possibileCards = ['bobrossparrot','explodyparrot','fiestaparrot','metalparrot','revertitparrot','tripletsparrot','unicornparrot']
-
+//variaveis para atualizar valor no timer
+let secondsInc = 0
+let seconds = 57
+let minutesInc = 0
+let minutes = 0
+//inicia timer
+function startTimer(){
+    const gameTimer = document.querySelector('.timer')
+    // formata para 2 digitos pro diplay ser 00 aoinvés de 0
+    seconds = formatNumberTo2digits(seconds)
+    minutes = formatNumberTo2digits(minutes)
+    //insere 00:00 como valor inicial
+    gameTimer.innerHTML = `
+    <div><span class="min">00</span>:<span class="sec">00</span></div>
+    `
+    if(gameTimer !== null){
+        //incrementa contador de segundos
+        secondsIncrementer = setInterval(() => {
+            const secondsSpan = document.querySelector('.sec')
+            secondsSpan.innerHTML = seconds
+            seconds++
+            seconds = formatNumberTo2digits(seconds)
+            if(seconds == 60) {
+                const minutesSpan = document.querySelector('.min')
+                console.log(minutes)
+                seconds = 0
+                minutes++
+                minutes = formatNumberTo2digits(minutes)
+                minutesSpan.innerHTML = minutes
+            }
+        }, 1000);
+    }
+}
+//formata numero para dois digitos
+function formatNumberTo2digits(number) {
+    number = number.toLocaleString('pt-br', {
+        minimumIntegerDigits: 2,
+      });
+    return number;
+}
+//Verifica s eo jogo terminou
 function isGameFinished(){
     if(pairsMatched.length == cardOptions){
         let res = prompt("Deseja jogar novamente? Responda com 'sim' caso queira :)")
@@ -13,7 +58,7 @@ function isGameFinished(){
         }
     }
 }
-
+//Pergutna quantas cartas devem ser exibidas na tela
 function askCardsQuantity(){
     let cardsQuantity = prompt("Com quantas cartas você deseja jogar?")
     if(cardsQuantity < 4 || cardsQuantity > 14 || cardsQuantity%2 != 0){
@@ -22,7 +67,7 @@ function askCardsQuantity(){
     }
     return generateCardsAvaible(cardsQuantity)
 }
-
+//método que embaralha array de strings
 function shuffleStrings(arr){
     let shuffled = []
     //copia indices do array de strings
@@ -42,7 +87,7 @@ function shuffleStrings(arr){
     }
     return newArr
 }
-
+//Gera cards disponíveis pra jogo com base na entrada do usuário
 function generateCardsAvaible(quantity){
     cardOptions = quantity/2
     //resgata todas opções
@@ -62,12 +107,12 @@ function generateCardsAvaible(quantity){
     return insertCards(options)
 
 }
-
+//insere cartas na tela
 function insertCards(cardsAvaible){
     let board = document.querySelector('main')
     board.innerHTML = `
         <div class="timer">
-            <div>00:00</div>
+            
         </div>
     `
     for(let i=0;i<cardsAvaible.length;i++){
@@ -82,8 +127,9 @@ function insertCards(cardsAvaible){
             </div>
         `
     }
+    startTimer()
 }
-
+//remove cartas da tela
 function removeCards(){
     let board = document.querySelector('main')
     board.innerHTML = ""
@@ -91,10 +137,7 @@ function removeCards(){
     cardsFliped = []
 }
 
-function startTimer(){
-
-}
-
+//vira carta
 function flipCard(card){
     //resgata frente e verso do card que invocou a função
     let back = card.querySelector('.back')
@@ -126,7 +169,7 @@ function flipCard(card){
         cardsFliped.pop()
     }
 }
-
+//verifica se o par de cartas já foi encontrado
 function pairMatched(card){
     let matched = false
     let cardName = getCardName(card)
@@ -138,11 +181,11 @@ function pairMatched(card){
     }
     return matched
 }
-
+//finaliza teste
 function endTest(){
     onTest = false
 }
-
+//pega nome do card com base na url da imagem
 function getCardName(card){
     //resgata faces frontais dos cards
     let cardFace = card.querySelector('.front')
@@ -156,7 +199,7 @@ function getCardName(card){
         return cardName
     }
 }
-
+//testa se as cartas selecionadas são iguais ou diferentes
 function testCards(){
     if(cardsFliped.length === 2){
         //remove funcionalidade de virar cartas de todas as cartas que não sejam as que estão em teste
