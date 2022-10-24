@@ -34,9 +34,12 @@ function startTimer(){
                 const minutesSpan = document.querySelector('.min')
                 console.log(minutes)
                 seconds = 0
+                seconds = formatNumberTo2digits(seconds)
                 minutes++
                 minutes = formatNumberTo2digits(minutes)
-                minutesSpan.innerHTML = minutes
+                setInterval(()=> {
+                    minutesSpan.innerHTML = minutes
+                },1000)
             }
         }, 1000);
     }
